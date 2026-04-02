@@ -1,0 +1,17 @@
+# Docker Data
+mysql_data/
+.DS_Store
+.env
+
+# Laravel Folders (Inside Apps)
+apps/*/vendor/
+apps/*/node_modules/
+apps/*/storage/*.key
+apps/*/storage/framework/cache/data/*
+apps/*/storage/framework/sessions/*
+apps/*/storage/framework/views/*
+apps/*/storage/logs/*.log
+
+# Sensitive Files
+apps/*/.env
+docker/mysql/conf.d/*.cnf
