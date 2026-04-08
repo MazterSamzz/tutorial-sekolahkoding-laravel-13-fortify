@@ -1,8 +1,15 @@
 # Gunakan versi PHP 8.5-fpm sebagai basis
 FROM php:8.5-fpm
 
+ARG UID
+
 # Update sistem dan install library yang dibutuhkan Laravel
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y \
+# ---------------------------------------------------------------------
+# apt-get dist-upgrade untuk memastikan semua paket di dalam image diperbarui ke versi terbaru.
+# Namun, proses ini bisa memakan waktu lebih lama dan mungkin tidak selalu diperlukan jika image dasar sudah cukup baru.
+# && apt-get dist-upgrade -y 
+# ---------------------------------------------------------------------
+RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
@@ -16,5 +23,9 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y \
 # Copy Composer dari image resmi agar bisa dipakai di dalam container
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Add new user with UID ${UID}
+RUN useradd -u ${UID} -ms /bin/bash laravel
+USER laravel
+
 # Atur folder kerja
-WORKDIR /var/www/app
+WORKDIR /var/www/html
